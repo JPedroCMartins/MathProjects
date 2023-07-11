@@ -1,6 +1,6 @@
 import tkinter
 from tkinter import *
-
+import numpy as np
 from Style import fontes
 class AppBhaskara():
     def __init__(self):
@@ -25,13 +25,28 @@ class AppBhaskara():
         height = event.height
 
         # Desenhar o eixo x
-        self.canvas.create_line(0, height / 2, width, height / 2, fill="red")
+        self.canvas.create_line(0, height / 2, width, height / 2, fill="black")
 
         # Desenhar o eixo y
-        self.canvas.create_line(width / 2, 0, width / 2, height, fill="green")
+        self.canvas.create_line(width / 2, 0, width / 2, height, fill="black")
 
         # Marcar o ponto de encontro dos eixos
-        self.canvas.create_oval(width / 2 - 3, height / 2 - 3, width / 2 + 3, height / 2 + 3, fill="blue")
+        center_x = width / 2
+        center_y = height / 2
+        marker_radius = 5
+        self.canvas.create_oval(center_x - marker_radius, center_y - marker_radius,
+                                center_x + marker_radius, center_y + marker_radius, fill="red")
+
+        # Marcar a coordenada (3, 3)
+        coord_x = center_x + self.x1 * (width / 20)
+        coord_y = center_y - 0 * (height / 20)
+        self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
+                                coord_x + marker_radius, coord_y + marker_radius, fill="blue")
+
+        coord_x = center_x + self.x2 * (width / 20)
+        coord_y = center_y - 0 * (height / 20)
+        self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
+                                coord_x + marker_radius, coord_y + marker_radius, fill="blue")
 
     def widgets(self):
         self.Label_a = Label(self.root, text="a:", font=self.fonte_padrao)
@@ -58,9 +73,6 @@ class AppBhaskara():
         self.lbl_resultado = Label(self.root, text="f(x) = ax^2+bx+c",font=self.fonte_padrao)
         self.lbl_resultado.place(relx=0.2, rely=0.55)
 
-        self.canvas = tkinter.Canvas(self.frm, bg="yellow")
-        self.canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
-        self.canvas.bind("<Configure>", self.update_canvas)
     def bhaskara_calc(self):
         a = int(self.Entry_a.get())
         b = int(self.Entry_b.get())
@@ -71,14 +83,15 @@ class AppBhaskara():
         else:
             #f(x) = ax^2 + bx + c
             raizQ_delta = delta**(1/2)
-            x1 = (-(b)+raizQ_delta) / (2*a)
-            x2 = (-(b)-raizQ_delta) / (2*a)
+            self.x1 = (-(b)+raizQ_delta) / (2*a)
+            self.x2 = (-(b)-raizQ_delta) / (2*a)
 
-            y1 = a*x1 + b*x1 + c*x1
-            y2 = a*x2 + b*x2 + c*x2
-            self.lbl_resultado["text"] = f"f(x) = {a}x^2+{b}x + {c}\n\nX' = {x1}\nX'' = {x2} "
-            print(x1, x2)
-            print(y1, y2)
+
+            self.lbl_resultado["text"] = f"f(x) = {a}x^2+{b}x + {c}\n\nX' = {self.x1}\nX'' = {self.x2} "
+            print(self.x1, self.x2)
+            self.canvas = tkinter.Canvas(self.frm, bg="yellow")
+            self.canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
+            self.canvas.bind("<Configure>", self.update_canvas)
 
 if __name__ == "__main__":
     AppBhaskara()
