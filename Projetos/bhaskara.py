@@ -3,10 +3,12 @@ from tkinter import *
 import numpy as np
 from Style import fontes
 from Style import colors
+import time
 class AppBhaskara():
     def __init__(self):
         self.root_bhaskara = tkinter.Tk()
-        self.fonte_padrao = fontes.fonte_verdana_bhaskara_label
+        self.fonte_padrao = fontes.fonte_bhaskara_label
+        self.fonte_btn = fontes.fonte_btn_main
         self.tela()
         self.frame_graph()
         self.widgets()
@@ -58,7 +60,7 @@ class AppBhaskara():
             coord_y = center_y - self.y * (height / 20)
             self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
                                     coord_x + marker_radius, coord_y + marker_radius, fill="red")
-        for x in range(20):
+        for x in range(10):
             x = -x
             self.y = (self.a) * (x ** 2) + (self.b * x) + (self.c)
             self.canvas.bind("<Configure>", self.update_canvas)
@@ -86,11 +88,14 @@ class AppBhaskara():
         self.Entry_c = Entry(self.root_bhaskara, font=self.fonte_padrao, bg=colors.background2, fg=colors.foreground1)
         self.Entry_c.place(relx=0.2, rely=0.25, relheight=0.1, relwidth=0.3)
 
-        self.btnCalcular = Button(self.root_bhaskara, text="CALCULAR", command=self.bhaskara_calc,font=fontes.fonte_verdana_bhaskara_button, bg=colors.background2, fg=colors.foreground2)
+        self.btnCalcular = Button(self.root_bhaskara, text="CALCULAR", command=self.bhaskara_calc,font=self.fonte_btn, bg=colors.background2, fg=colors.foreground2)
         self.btnCalcular.place(relx = 0.2, rely=0.40, relheight=0.1, relwidth=0.3)
 
         self.lbl_resultado = Label(self.root_bhaskara, text="f(x) = ax^2+bx+c", font=self.fonte_padrao, bg=colors.background1, fg=colors.foreground2)
         self.lbl_resultado.place(relx=0.60, rely=0.40)
+
+        self.lbl_footer = Label(self.root_bhaskara, text="Feito por: J.P. Martins\ntyr.mars@protonmail.com\n:D", font=self.fonte_padrao, bg=colors.background1, fg=colors.foreground1)
+        self.lbl_footer.place(relx=0.35, rely=0.80,relwidth=0.3)
 
     def bhaskara_calc(self):
         self.a = int(self.Entry_a.get())
@@ -99,6 +104,8 @@ class AppBhaskara():
         delta = (self.b**2) - 4 * (self.a) * (self.c)
         if delta < 0:
             print("Delta não possui valor real pois seu delta é menor que 0")
+            self.lbl_resultado["text"] = f"[Delta não possui raiz!]"
+            self.lbl_resultado["fg"] = "red"
         else:
             #f(x) = ax^2 + bx + c
             raizQ_delta = delta**(1/2)
@@ -107,6 +114,7 @@ class AppBhaskara():
 
 
             self.lbl_resultado["text"] = f"f(x) = {self.a}x^2+{self.b}x + {self.c}\n\nX' = {self.x1} | X'' = {self.x2} "
+            self.lbl_resultado["fg"] = colors.foreground1
             print(self.x1, self.x2)
             self.canvas = tkinter.Canvas(self.frm, bg="black")
             self.canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
