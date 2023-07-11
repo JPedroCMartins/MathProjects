@@ -18,20 +18,20 @@ class AppBhaskara():
         self.frm = Frame(self.root, bg="red")
         self.frm.place(relx=0.6, rely=0.05, relwidth=0.30, relheight=0.30)
 
-        canvas = tkinter.Canvas(self.frm, width=400, height=400, bg="yellow")
-        canvas.place(relx=0, rely=0)
+    def update_canvas(self, event):
+        self.canvas.delete("all")
 
-        width = canvas.winfo_width()
-        height = canvas.winfo_height()
+        width = event.width
+        height = event.height
 
         # Desenhar o eixo x
-        canvas.create_line(0, height / 2, width, height / 2, fill="red")
+        self.canvas.create_line(0, height / 2, width, height / 2, fill="red")
 
         # Desenhar o eixo y
-        canvas.create_line(width / 2, 0, width / 2, height, fill="green")
+        self.canvas.create_line(width / 2, 0, width / 2, height, fill="green")
 
         # Marcar o ponto de encontro dos eixos
-        canvas.create_oval(width / 2 - 3, height / 2 - 3, width / 2 + 3, height / 2 + 3, fill="blue")
+        self.canvas.create_oval(width / 2 - 3, height / 2 - 3, width / 2 + 3, height / 2 + 3, fill="blue")
 
     def widgets(self):
         self.Label_a = Label(self.root, text="a:", font=self.fonte_padrao)
@@ -57,6 +57,10 @@ class AppBhaskara():
 
         self.lbl_resultado = Label(self.root, text="f(x) = ax^2+bx+c",font=self.fonte_padrao)
         self.lbl_resultado.place(relx=0.2, rely=0.55)
+
+        self.canvas = tkinter.Canvas(self.frm, bg="yellow")
+        self.canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
+        self.canvas.bind("<Configure>", self.update_canvas)
     def bhaskara_calc(self):
         a = int(self.Entry_a.get())
         b = int(self.Entry_b.get())
