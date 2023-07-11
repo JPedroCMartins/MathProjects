@@ -54,11 +54,18 @@ class AppBhaskara():
         for x in range(20):
             self.y = (self.a) * (x ** 2) + (self.b * x) + (self.c)
             self.canvas.bind("<Configure>", self.update_canvas)
-
             coord_x = center_x + x * (width / 20)
             coord_y = center_y - self.y * (height / 20)
             self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
                                     coord_x + marker_radius, coord_y + marker_radius, fill="red")
+        for x in range(20):
+            x = -x
+            self.y = (self.a) * (x ** 2) + (self.b * x) + (self.c)
+            self.canvas.bind("<Configure>", self.update_canvas)
+            coord_x = center_x + x * (width / 20)
+            coord_y = center_y - self.y * (height / 20)
+            self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
+                                    coord_x + marker_radius, coord_y + marker_radius, fill="yellow")
 
     def widgets(self):
         self.Label_a = Label(self.root_bhaskara, text="a:", font=self.fonte_padrao, bg=colors.background1, fg=colors.foreground1)
