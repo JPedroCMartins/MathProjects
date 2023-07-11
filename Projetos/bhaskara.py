@@ -98,14 +98,15 @@ class AppBhaskara():
         self.lbl_footer.place(relx=0.35, rely=0.80,relwidth=0.3)
 
     def bhaskara_calc(self):
-        self.a = int(self.Entry_a.get())
-        self.b = int(self.Entry_b.get())
-        self.c = int(self.Entry_c.get())
+        self.a = float(self.Entry_a.get())
+        self.b = float(self.Entry_b.get())
+        self.c = float(self.Entry_c.get())
         delta = (self.b**2) - 4 * (self.a) * (self.c)
         if delta < 0:
             print("Delta não possui valor real pois seu delta é menor que 0")
             self.lbl_resultado["text"] = f"[Delta não possui raiz!]"
             self.lbl_resultado["fg"] = "red"
+            self.canvas.delete("all")
         else:
             #f(x) = ax^2 + bx + c
             raizQ_delta = delta**(1/2)
