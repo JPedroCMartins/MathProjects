@@ -38,7 +38,7 @@ class AppBhaskara():
         # Marcar o ponto de encontro dos eixos
         center_x = width / 2
         center_y = height / 2
-        marker_radius = 5
+        marker_radius = 2
         self.canvas.create_oval(center_x - marker_radius, center_y - marker_radius,
                                 center_x + marker_radius, center_y + marker_radius, fill="green")
 
@@ -123,4 +123,5 @@ class AppBhaskara():
 
 
 if __name__ == "__main__":
+    #Função principal
     AppBhaskara()
