@@ -23,51 +23,47 @@ class AppBhaskara():
         self.frm = Frame(self.root_bhaskara, bg="black")
         self.frm.place(relx=0.6, rely=0.05, relwidth=0.30, relheight=0.30)
 
-    def update_canvas(self, event):
+    def criarEixos(self, event):
         self.canvas.delete("all")
 
-        width = event.width
-        height = event.height
+        self.width = event.width
+        self.height = event.height
 
-        # Desenhar o eixo x
-        self.canvas.create_line(0, height / 2, width, height / 2, fill="green")
+        self.center_x = self.width / 2
+        self.center_y = self.height / 2
+        self.ponto = 5
 
-        # Desenhar o eixo y
-        self.canvas.create_line(width / 2, 0, width / 2, height, fill="green")
-
-        # Marcar o ponto de encontro dos eixos
-        center_x = width / 2
-        center_y = height / 2
-        marker_radius = 2
-        self.canvas.create_oval(center_x - marker_radius, center_y - marker_radius,
-                                center_x + marker_radius, center_y + marker_radius, fill="green")
-
+        self.canvas.create_line(0, self.height / 2, self.width, self.height / 2, fill="green")
+        self.canvas.create_line(self.width / 2, 0, self.width / 2, self.height, fill="green")
+        self.canvas.create_oval(self.center_x - self.ponto, self.center_y - self.ponto, self.center_x + self.ponto, self.center_y + self.ponto, fill="green")
+    def update_canvas(self, event):
+        self.criarEixos(event)
         # Marcar a coordenada (3, 3)
-        coord_x = center_x + self.x1 * (width / 20)
-        coord_y = center_y - 0 * (height / 20)
-        self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
-                                coord_x + marker_radius, coord_y + marker_radius, fill="red")
+        coord_x = self.center_x + self.x1 * (self.width / 20)
+        coord_y = self.center_y - 0 * (self.height / 20)
+        self.canvas.create_oval(coord_x - self.ponto, coord_y - self.ponto,
+                                coord_x + self.ponto, coord_y + self.ponto, fill="white")
 
-        coord_x = center_x + self.x2 * (width / 20)
-        coord_y = center_y - 0 * (height / 20)
-        self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
-                                coord_x + marker_radius, coord_y + marker_radius, fill="red")
+        coord_x = self.center_x + self.x2 * (self.width / 20)
+        coord_y = self.center_y - 0 * (self.height / 20)
+        self.canvas.create_oval(coord_x - self.ponto, coord_y - self.ponto,
+                                coord_x + self.ponto, coord_y + self.ponto, fill="black")
 
         for x in range(20):
             self.y = (self.a) * (x ** 2) + (self.b * x) + (self.c)
             self.canvas.bind("<Configure>", self.update_canvas)
-            coord_x = center_x + x * (width / 20)
-            coord_y = center_y - self.y * (height / 20)
-            self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
-                                    coord_x + marker_radius, coord_y + marker_radius, fill="red")
-        for x in range(10):
+            coord_x = self.center_x + x * (self.width / 20)
+            coord_y = self.center_y - self.y * (self.height / 20)
+            self.canvas.create_oval(coord_x - self.ponto, coord_y - self.ponto,
+                                    coord_x + self.ponto, coord_y + self.ponto, fill="red")
+        for x in range(20):
             x = -x
             self.y = (self.a) * (x ** 2) + (self.b * x) + (self.c)
             self.canvas.bind("<Configure>", self.update_canvas)
-            coord_x = center_x + x * (width / 20)
-            coord_y = center_y - self.y * (height / 20)
-            self.canvas.create_oval(coord_x - marker_radius, coord_y - marker_radius,
-                                    coord_x + marker_radius, coord_y + marker_radius, fill="yellow")
+            coord_x = self.center_x + x * (self.width / 20)
+            coord_y = self.center_y - self.y * (self.height / 20)
+            self.canvas.create_oval(coord_x - self.ponto, coord_y - self.ponto,
+                                    coord_x + self.ponto, coord_y + self.ponto, fill="red")
 
     def widgets(self):
         self.Label_a = Label(self.root_bhaskara, text="a:", font=self.fonte_padrao, bg=colors.background1, fg=colors.foreground1)
@@ -97,6 +93,8 @@ class AppBhaskara():
         self.lbl_footer = Label(self.root_bhaskara, text="Feito por: J.P. Martins\ntyr.mars@protonmail.com\n:D", font=self.fonte_padrao, bg=colors.background1, fg=colors.foreground1)
         self.lbl_footer.place(relx=0.35, rely=0.80,relwidth=0.3)
 
+        self.canvas = tkinter.Canvas(self.frm, bg="black")
+        self.canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
     def bhaskara_calc(self):
         self.a = float(self.Entry_a.get())
         self.b = float(self.Entry_b.get())
@@ -117,9 +115,8 @@ class AppBhaskara():
             self.lbl_resultado["text"] = f"f(x) = {self.a}x^2+{self.b}x + {self.c}\n\nX' = {self.x1} | X'' = {self.x2} "
             self.lbl_resultado["fg"] = colors.foreground1
             print(self.x1, self.x2)
-            self.canvas = tkinter.Canvas(self.frm, bg="black")
-            self.canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
             self.canvas.bind("<Configure>", self.update_canvas)
+
 
 
 if __name__ == "__main__":
